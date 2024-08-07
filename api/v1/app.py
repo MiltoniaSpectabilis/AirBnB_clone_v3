@@ -1,5 +1,11 @@
 #!/usr/bin/python3
-"""Flask Application"""
+"""
+Flask Application for AirBnB clone v3 API
+
+This module sets up the Flask application, registers blueprints,
+configures CORS, and defines error handlers for the AirBnB clone API.
+It serves as the main entry point for the API server.
+"""
 from flask import Flask, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
