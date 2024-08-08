@@ -2,12 +2,13 @@
 """
 Flask Application
 """
-from flask import Flask
+from flask import Flask, make_response, jsonify
 from models import storage
 from api.v1.views import app_views
 from os import getenv
 
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views)
 
 
@@ -23,15 +24,9 @@ def not_found(error):
     return make_response(jsonify({'error': "Not found"}), 404)
 
 
-@app.errorhandler(500)
-def server_error(error):
-    """500 Error handler"""
-    return make_response(jsonify({'error': "Internal Server Error"}), 500)
-
-
 if __name__ == "__main__":
     host = getenv('HBNB_API_HOST', '0.0.0.0')
-    port = getenv('HBNB_API_PORT', '5050')
+    port = getenv('HBNB_API_PORT', '5000')
     app.run(host=host, port=port, threaded=True)
 # from flask import Flask, jsonify, make_response
 # from models import storage
