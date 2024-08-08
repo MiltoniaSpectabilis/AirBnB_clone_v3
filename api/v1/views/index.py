@@ -3,33 +3,40 @@
 Index view for HBNB API
 """
 from api.v1.views import app_views
-from flask import jsonify
 from models import storage
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.user import User
 
 
-@app_views.route('/status', methods=['GET'], strict_slashes=False)
+@app_views.route("/status", strict_slashes=False, methods=["GET"])
 def status():
-    """Return status of API"""
-    return jsonify({"status": "OK"})
-
-
-@app_views.route('/stats', methods=['GET'], strict_slashes=False)
-def stats():
-    """Retrieves the number of each objects by type"""
-    classes = {
-        "amenities": "Amenity",
-        "cities": "City",
-        "places": "Place",
-        "reviews": "Review",
-        "states": "State",
-        "users": "User"
+    """return status for the api"""
+    return {
+        "status": "OK",
     }
 
-    stats = {}
-    for key, value in classes.items():
-        stats[key] = storage.count(value)
 
-    return jsonify(stats)
+@app_views.route("/stats", strict_slashes=False, methods=["GET"])
+def stat():
+    """return stats about each class"""
+    amenities = storage.count(Amenity)
+    cities = storage.count(City)
+    places = storage.count(Place)
+    reviews = storage.count(Review)
+    states = storage.count(State)
+    users = storage.count(User)
+    return {
+        "amenities": amenities,
+        "cities": cities,
+        "places": places,
+        "reviews": reviews,
+        "states": states,
+        "users": users,
+    }
 # #!/usr/bin/python3
 # """
 # Index view for API
