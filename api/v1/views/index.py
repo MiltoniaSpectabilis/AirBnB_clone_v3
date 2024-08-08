@@ -4,27 +4,39 @@ Index view for API
 """
 from api.v1.views import app_views
 from flask import jsonify
-from models import storage
 
 
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
     """Return status of API"""
-    return jsonify({"status": "OK"}), 200
-
-
-@app_views.route('/stats', methods=['GET'], strict_slashes=False)
-def number_objects():
-    """Retrieves the number of each objects by type"""
-    classes = {
-        "amenities": storage.count("Amenity"),
-        "cities": storage.count("City"),
-        "places": storage.count("Place"),
-        "reviews": storage.count("Review"),
-        "states": storage.count("State"),
-        "users": storage.count("User")
-    }
-    return jsonify(classes), 200
+    return jsonify({"status": "OK"})
+# #!/usr/bin/python3
+# """
+# Index view for API
+# """
+# from api.v1.views import app_views
+# from flask import jsonify
+# from models import storage
+#
+#
+# @app_views.route('/status', methods=['GET'], strict_slashes=False)
+# def status():
+#     """Return status of API"""
+#     return jsonify({"status": "OK"}), 200
+#
+#
+# @app_views.route('/stats', methods=['GET'], strict_slashes=False)
+# def number_objects():
+#     """Retrieves the number of each objects by type"""
+#     classes = {
+#         "amenities": storage.count("Amenity"),
+#         "cities": storage.count("City"),
+#         "places": storage.count("Place"),
+#         "reviews": storage.count("Review"),
+#         "states": storage.count("State"),
+#         "users": storage.count("User")
+#     }
+#     return jsonify(classes), 200
 # @app_views.route('/stats', methods=['GET'], strict_slashes=False)
 # def number_objects():
 #     """Retrieves the number of each objects by type"""
