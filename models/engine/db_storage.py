@@ -77,7 +77,11 @@ class DBStorage:
         """
         if cls and id:
             objs = self.all(cls)
-            return objs.get(cls.__name__ + "." + id)
+            if isinstance(cls, str):
+                key = cls + "." + id
+            else:
+                key = cls.__name__ + "." + id
+            return objs.get(key)
         return None
 
     def count(self, cls=None):
