@@ -17,6 +17,18 @@ def close_db(error):
     storage.close()
 
 
+@app.errorhandler(404)
+def not_found(error):
+    """404 Error handler"""
+    return make_response(jsonify({'error': "Not found"}), 404)
+
+
+@app.errorhandler(500)
+def server_error(error):
+    """500 Error handler"""
+    return make_response(jsonify({'error': "Internal Server Error"}), 500)
+
+
 if __name__ == "__main__":
     host = getenv('HBNB_API_HOST', '0.0.0.0')
     port = getenv('HBNB_API_PORT', '5000')
