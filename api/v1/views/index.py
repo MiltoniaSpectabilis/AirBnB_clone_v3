@@ -1,15 +1,35 @@
 #!/usr/bin/python3
 """
-Index view for API
+Index view for HBNB API
 """
 from api.v1.views import app_views
 from flask import jsonify
+from models import storage
 
 
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
     """Return status of API"""
     return jsonify({"status": "OK"})
+
+
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
+def stats():
+    """Retrieves the number of each objects by type"""
+    classes = {
+        "amenities": "Amenity",
+        "cities": "City",
+        "places": "Place",
+        "reviews": "Review",
+        "states": "State",
+        "users": "User"
+    }
+
+    stats = {}
+    for key, value in classes.items():
+        stats[key] = storage.count(value)
+
+    return jsonify(stats)
 # #!/usr/bin/python3
 # """
 # Index view for API
