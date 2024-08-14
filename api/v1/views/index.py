@@ -4,6 +4,7 @@ This module defines the /status route.
 """
 from flask import jsonify
 from api.v1.views import app_views
+from models import storage
 
 
 @app_views.route('/status')
@@ -12,6 +13,19 @@ def status():
     Returns the status of the API.
     """
     return jsonify({"status": "OK"})
+
+
+@app_views.route('/stats')
+def stats():
+    """
+    Retrieves the number of each object by type.
+    """
+    class_names = ["amenities", "cities",
+                   "places", "reviews", "states", "users"]
+    stats = {}
+    for class_name in class_names:
+        stats[class_name] = storage.count(class_name)
+    return jsonify(stats)
 # #!/usr/bin/python3
 # """
 # Index view for HBNB API
