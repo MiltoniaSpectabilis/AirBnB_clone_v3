@@ -6,7 +6,6 @@ from flask import jsonify, request, abort
 from models import storage
 from models.state import State
 from api.v1.views import app_views
-from werkzeug.exceptions import BadRequest  # Import BadRequest
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
@@ -25,7 +24,8 @@ def get_state(state_id):
     return jsonify(state.to_dict())
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_state(state_id):
     """Deletes a State object."""
     state = storage.get(State, state_id)
@@ -48,18 +48,6 @@ def create_state():
     state.save()
     return jsonify(state.to_dict()), 201
 
-# @app_views.route('/states', methods=['POST'], strict_slashes=False)
-# def create_state():
-#     """Creates a State."""
-#     if not request.get_json():
-#         abort(400, description="Not a JSON")
-#     if 'name' not in request.get_json():
-#         abort(400, description="Missing name")
-#     data = request.get_json()
-#     state = State(**data)
-#     state.save()
-#     return jsonify(state.to_dict()), 201
-
 
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
@@ -67,31 +55,11 @@ def update_state(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-
-    if request.content_type == 'application/json':
-        try:
-            data = request.get_json()
-        except BadRequest:
-            abort(400, description="Not a JSON")
-    else:  # Handle application/x-www-form-urlencoded
-        data = request.form
-
+    if not request.get_json():
+        abort(400, description="Not a JSON")
+    data = request.get_json()
     for key, value in data.items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(state, key, value)
     state.save()
     return jsonify(state.to_dict()), 200
-# @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
-# def update_state(state_id):
-#     """Updates a State object."""
-#     state = storage.get(State, state_id)
-#     if not state:
-#         abort(404)
-#     if not request.get_json():
-#         abort(400, description="Not a JSON")
-#     data = request.get_json()
-#     for key, value in data.items():
-#         if key not in ['id', 'created_at', 'updated_at']:
-#             setattr(state, key, value)
-#     state.save()
-#     return jsonify(state.to_dict()), 200
