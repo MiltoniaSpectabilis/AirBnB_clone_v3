@@ -89,7 +89,15 @@ class DBStorage:
         Returns the number of objects in storage matching the given class.
         If no class is passed, returns the count of all objects in storage.
         """
-        return len(self.all(cls))
+        if cls is None:
+            total = 0
+            for cls_name in self.__models.keys():
+                total += len(self.__session.query(
+                    self.__models[cls_name]).all())
+            return total
+        else:
+            return len(self.__session.query(self.__models[cls]).all())
+        # return len(self.all(cls))
 
     def close(self):
         """Close the database session"""
