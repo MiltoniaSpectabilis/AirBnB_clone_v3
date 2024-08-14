@@ -90,6 +90,10 @@ class DBStorage:
         If no class is passed, returns the count of all objects in storage.
         """
         return len(self.all(cls))
+
+    def close(self):
+        """Close the database session"""
+        self.__session.close()
     # def get(self, cls, id):
     #     """Retrieve one object"""
     #     if cls and id:
